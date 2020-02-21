@@ -23,8 +23,37 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ToDo App'),
+        backgroundColor: Colors.blueAccent,
+        centerTitle: true,
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Nova tarefa',
+                      labelStyle: TextStyle(color: Colors.blueAccent),
+                    ),
+                  ),
+                ),
+                RaisedButton(
+                  onPressed: () {}, 
+                  color: Colors.blueAccent,
+                  child: Text('ADD'),
+                  textColor: Colors.white,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
