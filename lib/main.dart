@@ -19,6 +19,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  final _toDoController = TextEditingController(); 
+
   List _toDo_list = [];
 
   @override
@@ -37,6 +39,7 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
+                    controller: _toDoController,
                     decoration: InputDecoration(
                       labelText: 'Nova tarefa',
                       labelStyle: TextStyle(color: Colors.blueAccent),
@@ -44,7 +47,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 RaisedButton(
-                  onPressed: () {}, 
+                  onPressed: _addToDo, 
                   color: Colors.blueAccent,
                   child: Text('ADD'),
                   textColor: Colors.white,
@@ -63,6 +66,11 @@ class _HomeState extends State<Home> {
                   secondary: CircleAvatar(
                     child: Icon(_toDo_list[index]['done'] ? Icons.check : Icons.error),
                   ),
+                  onChanged: (mark) {
+                    setState(() {
+                      _toDo_list[index]['done'] = mark;
+                    });
+                  },
 
                 );
               }
@@ -71,6 +79,18 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+
+  void _addToDo() {
+    setState(() {
+      Map<String, dynamic> newToDo = Map();
+
+      newToDo['title'] = this._toDoController.text;
+      newToDo['done'] = false;
+      this._toDoController.text = '';
+
+      this._toDo_list.add(newToDo);
+    });
   }
 
   Future<File> _getFile() async {
