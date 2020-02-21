@@ -70,22 +70,7 @@ class _HomeState extends State<Home> {
             child: ListView.builder(
               padding: EdgeInsets.only(top: 10.0),
               itemCount: _toDo_list.length,
-              itemBuilder: (context, index) {
-                return CheckboxListTile(
-                  title: Text(_toDo_list[index]['title']),
-                  value: _toDo_list[index]['done'],
-                  secondary: CircleAvatar(
-                    child: Icon(_toDo_list[index]['done'] ? Icons.check : Icons.error),
-                  ),
-                  onChanged: (mark) {
-                    setState(() {
-                      _toDo_list[index]['done'] = mark;
-                      _saveData();
-                    });
-                  },
-
-                );
-              }
+              itemBuilder: _buildItem,
             ),
           ),
         ],
@@ -105,6 +90,32 @@ class _HomeState extends State<Home> {
 
       _saveData();
     });
+  }
+
+  Widget _buildItem(context, index) {
+    return Dismissible(
+      background: Container(
+        color: Colors.red,
+        child: Align(
+          alignment: Alignment(-0.9, 0.0),
+          child: Icon(Icons.delete, color: Colors.white),
+        )
+      ),
+      key: Key(DateTime.now().millisecondsSinceEpoch.toString()), 
+      child: CheckboxListTile(
+        title: Text(_toDo_list[index]['title']),
+        value: _toDo_list[index]['done'],
+        secondary: CircleAvatar(
+          child: Icon(_toDo_list[index]['done'] ? Icons.check : Icons.error),
+        ),
+       onChanged: (mark) {
+        setState(() {
+          _toDo_list[index]['done'] = mark;
+          _saveData();
+        });
+      }),
+      direction: DismissDirection.startToEnd,
+    );
   }
 
   Future<File> _getFile() async {
