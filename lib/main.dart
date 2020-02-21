@@ -22,6 +22,8 @@ class _HomeState extends State<Home> {
   final _toDoController = TextEditingController(); 
 
   List _toDo_list = [];
+  Map<String, dynamic> _lastRemoved;
+  int _lastRemovedPos;
 
   @override
   void initState() {
@@ -114,6 +116,30 @@ class _HomeState extends State<Home> {
           _saveData();
         });
       }),
+      onDismissed: (direction) {
+        setState(() {
+          _lastRemoved = Map.from(_toDo_list[index]);
+          _lastRemovedPos = index;
+          _toDo_list.removeAt(index);
+          _saveData();
+
+          final snackBar = SnackBar(
+              content: Text('Tarefa ${_lastRemoved['title']} removida!'),
+              action: SnackBarAction(
+                label: 'Desfazer', 
+                onPressed: () {
+                  setState(() {
+                    _toDo_list.insert(_lastRemovedPos, _lastRemoved);
+                    _saveData();
+                  });
+                }
+              ),
+              duration: Duration(seconds: 3),
+            );
+
+            Scaffold.of(context).showSnackBar(snackBar);
+        });
+      },
       direction: DismissDirection.startToEnd,
     );
   }
