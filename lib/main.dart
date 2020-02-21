@@ -24,6 +24,17 @@ class _HomeState extends State<Home> {
   List _toDo_list = [];
 
   @override
+  void initState() {
+    super.initState();
+
+    _readData().then((data) {
+      setState(() {
+        this._toDo_list = json.decode(data);
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -69,6 +80,7 @@ class _HomeState extends State<Home> {
                   onChanged: (mark) {
                     setState(() {
                       _toDo_list[index]['done'] = mark;
+                      _saveData();
                     });
                   },
 
@@ -90,6 +102,8 @@ class _HomeState extends State<Home> {
       this._toDoController.text = '';
 
       this._toDo_list.add(newToDo);
+
+      _saveData();
     });
   }
 
