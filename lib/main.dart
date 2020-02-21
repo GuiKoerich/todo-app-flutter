@@ -19,7 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  List _toDo_list = List();
+  List _toDo_list = [];
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +48,26 @@ class _HomeState extends State<Home> {
                   color: Colors.blueAccent,
                   child: Text('ADD'),
                   textColor: Colors.white,
-                )
+                ),
               ],
             ),
-          )
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.only(top: 10.0),
+              itemCount: _toDo_list.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                  title: Text(_toDo_list[index]['title']),
+                  value: _toDo_list[index]['done'],
+                  secondary: CircleAvatar(
+                    child: Icon(_toDo_list[index]['done'] ? Icons.check : Icons.error),
+                  ),
+
+                );
+              }
+            ),
+          ),
         ],
       ),
     );
